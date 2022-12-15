@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
-	"server/databases"
+	"os"
+	"server/database"
 	"server/pkg/mysql"
 	"server/routes"
-	"os"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -15,32 +14,30 @@ import (
 )
 
 func main() {
-
-	if err := godotenv.Load(); err != nil {
-		log.Println(" No ENV file found")
+	// env
+	errEnv := godotenv.Load()
+	if errEnv != nil {
+		panic("Failed to load env file")
 	}
-	//mysql database init
-	mysql.DAtabaseInit()
-	//migration
-	databases.RunMigrate()
+
+	mysql.DatabaseInit()
+
+	database.RunMigration()
+
 	r := mux.NewRouter()
 
-	//	sub route API
 	routes.RoutesInit(r.PathPrefix("/cinema").Subrouter())
 
-	// uploads path prefix
+	var AllowedHeaders = handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	var AllowedMethods = handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS", "PATCH", "DELETE"})
+	var AllowedOrigins = handlers.AllowedOrigins([]string{"*"})
+
 	r.PathPrefix("/uploads").Handler(http.StripPrefix("/uploads/", http.FileServer(http.Dir("./uploads"))))
 
-	//env
-
-	//	cors
-	var allowedHeaders = handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
-	var allowedMethods = handlers.AllowedMethods([]string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"})
-	var allowedOrigins = handlers.AllowedOrigins([]string{"*"})
-
+	// Modify 1 line this below code get port from env ...
+	// var port = "5000"
 	var port = os.Getenv("PORT")
 
-	fmt.Println("SERVER Running on Port 5000")
-	http.ListenAndServe(":"+port, handlers.CORS(allowedHeaders, allowedMethods, allowedOrigins)(r))
-
+	fmt.Println("Server Running on localhost:" + port)
+	http.ListenAndServe(":"+port, handlers.CORS(AllowedHeaders, AllowedMethods, AllowedOrigins)(r))
 }

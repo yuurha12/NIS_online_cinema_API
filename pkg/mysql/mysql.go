@@ -11,7 +11,7 @@ import (
 
 var DB *gorm.DB
 
-func DAtabaseInit() {
+func DatabaseInit() {
 	var err error
 
 	var DB_HOST = os.Getenv("DB_HOST")
