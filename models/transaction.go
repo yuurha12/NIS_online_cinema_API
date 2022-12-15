@@ -10,7 +10,7 @@ type Transaction struct {
 	Film         FilmResponse `json:"film"`
 	Status       string       `json:"status"`
 	Price        int          `json:"price"`
-	TanggalOrder time.Time    `json:"tanggal_order" gorm:"default:Now()"`
+	TanggalOrder time.Time    `json:"tanggal_order"`
 }
 type TransactionUserResponse struct {
 	ID           int          `json:"id"`
