@@ -2,16 +2,17 @@ package mysql
 
 import (
 	"fmt"
-	"os" //for importing .env setup db os.GetEnv
+	"os"
 
 	"gorm.io/driver/mysql"
+	// "gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
-var err error
 
-func DatabaseInit() {
+func DAtabaseInit() {
+	var err error
 
 	var DB_HOST = os.Getenv("DB_HOST")
 	var DB_USER = os.Getenv("DB_USER")
@@ -20,13 +21,12 @@ func DatabaseInit() {
 	var DB_PORT = os.Getenv("DB_PORT")
 
 	// dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s", DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT)
-	// DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	// DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
-	//if using localhost
+	// using mysql
 	// dsn := "root:121295@tcp(localhost:3306)/CINEMA_ONLINE?charset=utf8mb4&parseTime=True&loc=Local"
 	// DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
-	// // ===== If using MySql =====
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME)
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
