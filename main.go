@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"server/database"
+	"server/databases"
 	"server/pkg/mysql"
 	"server/routes"
 
@@ -22,7 +22,7 @@ func main() {
 
 	mysql.DatabaseInit()
 
-	database.RunMigration()
+	databases.RunMigrate()
 
 	r := mux.NewRouter()
 
