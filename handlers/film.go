@@ -171,7 +171,7 @@ func (h *handlerFilm) UpdateFilm(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if filepath != "false" {
-		film.Image = filepath
+		film.Image = request.Image
 	}
 
 	if request.Description != "" {
