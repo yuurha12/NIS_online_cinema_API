@@ -152,7 +152,7 @@ func (h *handlerFilm) UpdateFilm(w http.ResponseWriter, r *http.Request) {
 		Price:       price,
 		FilmUrl:     r.FormValue("filmUrl"),
 		// Image:    filename, // Modify store file URL to database from resp.SecureURL here ...
-		Image:      resp.SecureURL,
+		Image:       resp.SecureURL,
 		CategoryID: category,
 	}
 
@@ -170,7 +170,7 @@ func (h *handlerFilm) UpdateFilm(w http.ResponseWriter, r *http.Request) {
 		film.Price = request.Price
 	}
 
-	if filepath != "" {
+	if filepath != "false" {
 		film.Image = request.Image
 	}
 
